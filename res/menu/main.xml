@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_restart"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@+string/action_restart"/>
+    <item
+        android:id="@+id/action_load"
+        android:orderInCategory="102"
+        android:showAsAction="never"
+        android:title="@+string/action_load"/>
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="103"
+        android:showAsAction="never"
+        android:title="@+string/action_save"/>
+    <item
+        android:checkable="true"
+        android:id="@+id/action_speed_up"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="@string/action_speed_up"/>
+    <item
+        android:id="@+id/action_quit"
+        android:orderInCategory="104"
+        android:showAsAction="never"
+        android:title="@+string/action_quit"/>
+
+</menu>

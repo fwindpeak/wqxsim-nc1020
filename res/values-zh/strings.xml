@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NC1020</string>
+    <string name="action_restart">重启</string>
+    <string name="action_speed_up">加速</string>
+    <string name="action_load">读档</string>
+    <string name="action_save">存档</string>
+    <string name="action_quit">退出</string>
+    
+</resources>
