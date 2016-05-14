@@ -11,7 +11,7 @@ public class NC1020_Service extends Service {
 	public static final int RESULT_QUIT = 0;
 	public static final int RESULT_FRAME = 1;
 
-	private static final int FRAME_RATE = 50;
+	private static final int FRAME_RATE = 100;
 	private static final int FRAME_INTERVAL = 1000 / FRAME_RATE;
 	private ResultReceiver activityReceiver;
 	private Handler frameHandler;

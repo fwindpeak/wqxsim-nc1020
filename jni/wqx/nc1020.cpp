@@ -8,7 +8,7 @@ namespace wqx {
 using std::string;
 
 // cpu cycles per second (cpu freq).
-const size_t CYCLES_SECOND = 5120000;
+const size_t CYCLES_SECOND = 5120000*2;
 const size_t TIMER0_FREQ = 2;
 const size_t TIMER1_FREQ = 0x100;
 // cpu cycles per timer0 period (1/2 s).
