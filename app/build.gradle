@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "gmail.hackwaly.nc1020"
+        minSdkVersion 14
+        targetSdkVersion 30
+
+        ndk {
+            moduleName "NC1020"
+        }
+        externalNativeBuild {
+            ndkBuild {
+                cppFlags ''
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path file('src/main/cpp/Android.mk')
+        }
+    }
+}
+
+repositories {
+    maven {url 'https://maven.aliyun.com/nexus/content/groups/public/'}
+    maven { url 'https://maven.aliyun.com/repository/google' }
+
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+}
