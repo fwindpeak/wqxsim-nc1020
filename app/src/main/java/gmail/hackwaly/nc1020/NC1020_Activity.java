@@ -2,11 +2,19 @@ package gmail.hackwaly.nc1020;
 
 import gmail.hackwaly.nc1020.NC1020_KeypadView.OnKeyListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,6 +28,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +37,7 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 public class NC1020_Activity extends Activity implements Callback,
 		OnKeyListener {
@@ -95,10 +105,7 @@ public class NC1020_Activity extends Activity implements Callback,
 
 		lcdSurfaceHolder.addCallback(this);
 		frameReceiver = new NC1020_ResultReceiver(null);
-		NC1020_JNI.Initialize(Environment.getExternalStorageDirectory()
-				.getPath() + "/nc1020");
-		NC1020_JNI.Load();
-		tellService(true);
+		this.load();
 	}
 
 	@Override
@@ -264,5 +271,48 @@ public class NC1020_Activity extends Activity implements Callback,
 	@Override
 	public void onKeyUp(int keyId) {
 		NC1020_JNI.SetKey(keyId, false);
+	}
+
+
+	private void copyToLocal(String asset,String dataFilePath) throws IOException {
+		final AssetManager assetManager = this.getAssets();
+		final String newFilePath = dataFilePath + "/" + asset;
+		final File newFile = new File(newFilePath);
+		if(newFile.exists()){
+			return;
+		}
+		final String newFileDirPath = newFile.getParent();
+		if (newFileDirPath != null) {
+			final File newFileDir = new File(newFileDirPath);
+			if (!newFileDir.exists() && !newFileDir.mkdirs()) {
+				throw new IOException("Failed to mkdirs: " + newFileDirPath);
+			}
+		}
+		try (final OutputStream out = new FileOutputStream(newFilePath, false)) {
+			try (final InputStream in = assetManager.open(asset)) {
+				final byte[] buffer = new byte[65535];
+				while (in.read(buffer) > 0) {
+					out.write(buffer);
+				}
+			}
+		}
+	}
+
+	private void load(){
+		final String dirPath = "nc1020";
+		final String dataFilePath = this.getFilesDir().getAbsolutePath() + "/" + dirPath;
+		List<String> list = new ArrayList<>();
+		list.add("ns1020.fls");
+		try{
+			this.copyToLocal("nc1020.fls",dataFilePath);
+			this.copyToLocal("obj_lu.bin",dataFilePath);
+		}catch(IOException e){
+			e.printStackTrace();
+			return;
+		}
+
+		NC1020_JNI.Initialize(dataFilePath);
+		NC1020_JNI.Load();
+		tellService(true);
 	}
 }

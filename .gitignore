@@ -2,3 +2,5 @@
 .gradle/
 app/build/
 local.*
+app/release
+app/debug
